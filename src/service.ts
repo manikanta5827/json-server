@@ -235,6 +235,15 @@ export class Service {
         if (paramValue && !Array.isArray(paramValue)) {
           // https://github.com/sindresorhus/dot-prop/issues/95
           const itemValue: unknown = getProperty(item, key)
+
+          // If the specified key doesn't exist in the item, filter it out
+          if (typeof itemValue == 'undefined') {
+            if (op === Condition.ne) {
+              return true;
+            }
+            return false;
+          }
+
           switch (op) {
             // item_gt=value
             case Condition.gt: {
